@@ -1,0 +1,2 @@
+  nixpkgs-ruby:
+    url: github:bobvanderlinden/nixpkgs-ruby
