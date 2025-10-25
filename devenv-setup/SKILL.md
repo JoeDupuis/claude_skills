@@ -1,7 +1,7 @@
 ---
 name: devenv-setup
 description: Set up devenv development environments in projects. Use when the user requests to set up devenv, initialize a development environment, or configure devenv for a new or existing project. Detects project language and applies appropriate configuration.
-allowed-tools: Read, Write, Edit, Glob, Bash, AskUserQuestion
+allowed-tools: Read, Write, Edit, Glob, Bash, BashOutput, AskUserQuestion
 ---
 
 # Devenv Setup
@@ -71,6 +71,14 @@ Run a simple command with devenv to generate lock files and validate the configu
 ```bash
 devenv shell "echo 'Devenv setup successful'"
 ```
+
+**IMPORTANT: This command can take a VERY long time (several minutes or more) as it builds the development environment.**
+
+You MUST:
+1. Run the command in the background using `run_in_background: true`
+2. Poll for output every 20 seconds using the BashOutput tool
+3. Inform the user that the build is in progress and may take several minutes
+4. Continue checking until the command completes
 
 This will:
 - Generate `.devenv.flake.nix` and other generated files
