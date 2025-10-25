@@ -1,6 +1,7 @@
 ---
 name: devenv-setup
 description: Set up devenv development environments in projects. Use when the user requests to set up devenv, initialize a development environment, or configure devenv for a new or existing project. Detects project language and applies appropriate configuration.
+allowed-tools: Read, Write, Edit, Glob, Bash, AskUserQuestion
 ---
 
 # Devenv Setup
