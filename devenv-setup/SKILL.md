@@ -37,6 +37,7 @@ Copy all files from `assets/base/` to the project root:
 - `devenv.nix` - Main configuration
 - `devenv.yaml` - Inputs configuration
 - `devenv.local.nix` - Local customizations (empty by default)
+- `.envrc` - Direnv integration for automatic environment activation
 
 ### 3. Apply Language-Specific Configuration
 
@@ -107,7 +108,7 @@ git init
 Add all devenv-related files (including generated ones) and commit:
 
 ```bash
-git add devenv.nix devenv.yaml devenv.local.nix devenv.lock .devenv.flake.nix .gitignore .dockerignore
+git add devenv.nix devenv.yaml devenv.local.nix .envrc devenv.lock .devenv.flake.nix .gitignore .dockerignore
 git commit -m "Set up devenv development environment"
 ```
 
@@ -119,6 +120,7 @@ Base template files copied to all projects:
 - `devenv.nix` - Base configuration with common packages
 - `devenv.yaml` - Base inputs (nixpkgs-unstable)
 - `devenv.local.nix` - Empty template for local customizations
+- `.envrc` - Direnv integration for automatic environment activation
 
 ### assets/languages/<language>/
 
