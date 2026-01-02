@@ -94,6 +94,32 @@ This generates:
 
 **Important:** The generator creates its own session test helper. Our `SessionTestHelper` in step 12 is designed to work with the generated authentication. After running the generator, verify the generated files don't conflict.
 
+#### Add Admin Field to User
+
+Generate a migration to add the admin boolean:
+
+```bash
+devenv shell "bin/rails generate migration AddAdminToUsers admin:boolean"
+```
+
+Edit the generated migration to set a default value:
+
+```ruby
+add_column :users, :admin, :boolean, default: false, null: false
+```
+
+#### Create AdminController
+
+Copy `assets/languages/rails/auth/admin_controller.rb` to `app/controllers/admin_controller.rb`.
+
+This controller restricts access to admin users only.
+
+#### Configure Mission Control Jobs
+
+Copy `assets/languages/rails/auth/mission_control_jobs_initializer.rb` to `config/initializers/mission_control_jobs.rb`.
+
+This makes Mission Control Jobs require admin access.
+
 #### Add Development Seed User
 
 Add content from `assets/languages/rails/auth/seeds_dev_user.rb` to `db/seeds.rb`:
@@ -102,6 +128,7 @@ Add content from `assets/languages/rails/auth/seeds_dev_user.rb` to `db/seeds.rb
 if Rails.env.development?
   User.find_or_create_by!(email_address: "dev@example.com") do |user|
     user.password = "Xk9#mP7$qR2@vL5"
+    user.admin = true
   end
 end
 ```
@@ -147,12 +174,21 @@ gem "launchy"
 ```ruby
 gem "hotwire-spark"
 gem "letter_opener_web", "~> 3.0"
+gem "mission_control-jobs"
 ```
 
 Then run bundle install again:
 
 ```bash
 devenv shell "bundle install"
+```
+
+#### Update Routes
+
+Add to `config/routes.rb`:
+
+```ruby
+mount MissionControl::Jobs::Engine, at: "/jobs"
 ```
 
 ### 11. Configure System Tests
@@ -319,8 +355,10 @@ All template files are located in `assets/languages/rails/`:
 - `stylesheets/flash-alert.css` - Flash message styling
 - `stylesheets/branch-indicator.css` - Styling for the branch indicator
 - `javascript/controllers/alert_controller.js` - Stimulus controller for dismissable alerts
+- `auth/admin_controller.rb` - AdminController for restricted access (optional, with auth)
+- `auth/mission_control_jobs_initializer.rb` - Mission Control Jobs config (optional, with auth)
 - `auth/dev_signin_controller.js` - Stimulus controller for dev sign-in (optional, with auth)
-- `auth/seeds_dev_user.rb` - Development user seed (optional, with auth)
+- `auth/seeds_dev_user.rb` - Development admin user seed (optional, with auth)
 - `auth/_dev_signin.html.erb` - Dev sign-in partial (optional, with auth)
 - `auth/dev-signin.css` - Dev sign-in styling (optional, with auth)
 - `rules/rails.md` - Rails conventions for Claude
