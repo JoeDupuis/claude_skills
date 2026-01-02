@@ -18,14 +18,20 @@ Automate the setup of devenv development environments for projects. Detect proje
 - Use the language specified by the user
 - Read the corresponding `references/languages/<language>.md` file for setup instructions
 
-**If the user doesn't specify a language:**
-- Infer the language by checking for common indicator files:
-  - Ruby: `.ruby-version` or `Gemfile`
+**If the user doesn't specify a language/framework:**
+- Infer the language/framework by checking for common indicator files:
+  - Rails: `config/application.rb` or `Gemfile` containing `rails`
+  - Ruby: `.ruby-version` or `Gemfile` (without rails)
   - Python: `.python-version`, `requirements.txt`, or `pyproject.toml`
   - Node.js: `package.json`
   - (Add more as languages are supported)
-- If a language is inferred, use the AskUserQuestion tool to confirm with the user
+- If a language/framework is inferred, use the AskUserQuestion tool to confirm with the user
 - Once confirmed, read the corresponding `references/languages/<language>.md` file for setup instructions
+
+**Framework vs Language:**
+- Some entries like Rails are frameworks that build on a base language
+- Rails setup will first complete all Ruby setup steps, then apply Rails-specific configuration
+- Always check the reference file for prerequisites
 
 **If no language is determined or user confirms no language:**
 - Proceed with base setup only
@@ -126,10 +132,19 @@ Base template files copied to all projects:
 
 Language-specific configuration additions that get merged into base files.
 
+For frameworks like Rails, this also includes:
+- Template files (helpers, concerns, etc.)
+- Claude rules files for `.claude/rules/`
+
 ### references/languages/<language>.md
 
-Detailed setup instructions for each supported language, including:
-- How to detect the language
+Detailed setup instructions for each supported language/framework, including:
+- How to detect the language/framework
 - Required files and prerequisites
 - Configuration additions needed
 - Implementation steps
+
+## Supported Languages/Frameworks
+
+- **Ruby** (`references/languages/ruby.md`) - Basic Ruby projects
+- **Rails** (`references/languages/rails.md`) - Rails applications (includes Ruby setup)
