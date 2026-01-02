@@ -1,0 +1,5 @@
+      <% if Rails.env.development? %>
+        <div class="branch-indicator">
+          <%= current_git_branch || "unknown" %>
+        </div>
+      <% end %>

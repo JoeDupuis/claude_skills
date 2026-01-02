@@ -162,7 +162,37 @@ Add the helper methods from `assets/languages/rails/application_helper_additions
 - `flash_message` - renders flash messages with proper styling
 - `current_git_branch` - returns current git branch in development
 
-### 14. Copy Claude Rules
+### 14. Add View Templates
+
+#### app/views/application/_flash_messages.html.erb
+
+Create this file with content from `assets/languages/rails/views/_flash_messages.html.erb`.
+
+#### app/views/application/_form_errors.html.erb
+
+Create this file with content from `assets/languages/rails/views/_form_errors.html.erb`.
+
+#### app/views/layouts/application.html.erb
+
+Add flash messages at the top of `<body>` (content from `assets/languages/rails/views/layout_flash_messages.html.erb`):
+
+```erb
+<div id="flash-messages">
+  <%= render "application/flash_messages" %>
+</div>
+```
+
+Add branch indicator at the bottom of `<body>`, before the closing `</body>` tag (content from `assets/languages/rails/views/layout_branch_indicator.html.erb`):
+
+```erb
+<% if Rails.env.development? %>
+  <div class="branch-indicator">
+    <%= current_git_branch || "unknown" %>
+  </div>
+<% end %>
+```
+
+### 15. Copy Claude Rules
 
 Copy the rules files from `assets/languages/rails/rules/` to the project's `.claude/rules/` directory:
 
@@ -174,7 +204,7 @@ Copy:
 - `assets/languages/rails/rules/rails.md` → `.claude/rules/rails.md`
 - `assets/languages/rails/rules/rscss.md` → `.claude/rules/rscss.md`
 
-### 15. Commit Changes
+### 16. Commit Changes
 
 Add all files and commit:
 
@@ -193,5 +223,9 @@ All template files are located in `assets/languages/rails/`:
 - `application_helper_additions.rb` - ApplicationHelper methods (form_errors, flash_message, current_git_branch)
 - `notice_i18n.rb` - NoticeI18n concern for controller flash messages
 - `locales_additions.yml` - I18n entries for the NoticeI18n concern
+- `views/_flash_messages.html.erb` - Flash messages partial
+- `views/_form_errors.html.erb` - Form errors partial
+- `views/layout_flash_messages.html.erb` - Flash messages for layout (top of body)
+- `views/layout_branch_indicator.html.erb` - Git branch indicator for layout (bottom of body, dev only)
 - `rules/rails.md` - Rails conventions for Claude
 - `rules/rscss.md` - CSS conventions for Claude
