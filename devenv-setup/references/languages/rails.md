@@ -75,7 +75,63 @@ The Rails generator may remove devenv entries from `.gitignore` and `.dockerigno
 devenv.local.nix
 ```
 
-### 9. Replace Capybara with Cuprite
+### 9. Optional: Set Up Authentication
+
+**Ask the user if they want Rails authentication.**
+
+If yes, run the authentication generator:
+
+```bash
+devenv shell "bin/rails generate authentication"
+```
+
+This generates:
+- User and Session models
+- Sessions controller
+- Authentication concern
+- Login views
+- Test helpers
+
+**Important:** The generator creates its own session test helper. Our `SessionTestHelper` in step 12 is designed to work with the generated authentication. After running the generator, verify the generated files don't conflict.
+
+#### Add Development Seed User
+
+Add content from `assets/languages/rails/auth/seeds_dev_user.rb` to `db/seeds.rb`:
+
+```ruby
+if Rails.env.development?
+  User.find_or_create_by!(email_address: "dev@example.com") do |user|
+    user.password = "Xk9#mP7$qR2@vL5"
+  end
+end
+```
+
+#### Add Dev Sign-In Controller
+
+Copy `assets/languages/rails/auth/dev_signin_controller.js` to `app/javascript/controllers/dev_signin_controller.js`.
+
+#### Add Dev Sign-In Partial
+
+Copy `assets/languages/rails/auth/_dev_signin.html.erb` to `app/views/sessions/_dev_signin.html.erb`.
+
+Add to the sessions/new view (login page), inside the form:
+
+```erb
+<%= render "dev_signin" %>
+```
+
+#### Add Dev Sign-In Styling
+
+Copy `assets/languages/rails/auth/dev-signin.css` to `app/assets/stylesheets/dev-signin.css`.
+
+#### Run Migrations and Seed
+
+```bash
+devenv shell "bin/rails db:migrate"
+devenv shell "bin/rails db:seed"
+```
+
+### 10. Replace Capybara with Cuprite
 
 Edit the `Gemfile` to replace the capybara gem with cuprite and launchy:
 
@@ -90,7 +146,7 @@ Then run bundle install again:
 devenv shell "bundle install"
 ```
 
-### 10. Configure System Tests
+### 11. Configure System Tests
 
 Edit `test/application_system_test_case.rb` to replace the default `driven_by` configuration with Cuprite. Add the content from `assets/languages/rails/application_system_test_case_additions.rb`:
 
@@ -110,7 +166,7 @@ driven_by :cuprite, using: :chrome, screen_size: [ 1400, 1400 ], options: {
 
 Replace the existing `driven_by` line with this configuration.
 
-### 11. Add Test Helpers
+### 12. Add Test Helpers
 
 #### test/test_helper.rb
 
@@ -142,7 +198,7 @@ include SessionTestHelper
 
 Create this file with content from `assets/languages/rails/session_test_helper.rb`.
 
-### 12. Add NoticeI18n Concern
+### 13. Add NoticeI18n Concern
 
 #### app/controllers/concerns/notice_i18n.rb
 
@@ -152,7 +208,7 @@ Create this file with content from `assets/languages/rails/notice_i18n.rb`.
 
 Add the i18n entries from `assets/languages/rails/locales_additions.yml` under the `en:` key.
 
-### 13. Add Application Helper Methods
+### 14. Add Application Helper Methods
 
 #### app/helpers/application_helper.rb
 
@@ -162,7 +218,7 @@ Add the helper methods from `assets/languages/rails/application_helper_additions
 - `flash_message` - renders flash messages with proper styling
 - `current_git_branch` - returns current git branch in development
 
-### 14. Add View Templates
+### 15. Add View Templates
 
 #### app/views/application/_flash_messages.html.erb
 
@@ -196,7 +252,7 @@ Add branch indicator at the bottom of `<body>`, before the closing `</body>` tag
 
 Create this file with content from `assets/languages/rails/stylesheets/branch-indicator.css`.
 
-### 15. Add Base Stylesheets
+### 16. Add Base Stylesheets
 
 Copy the following stylesheets from `assets/languages/rails/stylesheets/` to `app/assets/stylesheets/`:
 
@@ -205,7 +261,7 @@ Copy the following stylesheets from `assets/languages/rails/stylesheets/` to `ap
 - `base.css` - Base element styles
 - `flash-alert.css` - Flash message styling
 
-### 16. Add Stimulus Controllers
+### 17. Add Stimulus Controllers
 
 #### app/javascript/controllers/alert_controller.js
 
@@ -213,7 +269,7 @@ Create this file with content from `assets/languages/rails/javascript/controller
 
 This controller adds a close button to flash alerts and handles dismissal.
 
-### 17. Copy Claude Rules
+### 18. Copy Claude Rules
 
 Copy the rules files from `assets/languages/rails/rules/` to the project's `.claude/rules/` directory:
 
@@ -225,7 +281,7 @@ Copy:
 - `assets/languages/rails/rules/rails.md` → `.claude/rules/rails.md`
 - `assets/languages/rails/rules/rscss.md` → `.claude/rules/rscss.md`
 
-### 18. Commit Changes
+### 19. Commit Changes
 
 Add all files and commit:
 
@@ -254,5 +310,9 @@ All template files are located in `assets/languages/rails/`:
 - `stylesheets/flash-alert.css` - Flash message styling
 - `stylesheets/branch-indicator.css` - Styling for the branch indicator
 - `javascript/controllers/alert_controller.js` - Stimulus controller for dismissable alerts
+- `auth/dev_signin_controller.js` - Stimulus controller for dev sign-in (optional, with auth)
+- `auth/seeds_dev_user.rb` - Development user seed (optional, with auth)
+- `auth/_dev_signin.html.erb` - Dev sign-in partial (optional, with auth)
+- `auth/dev-signin.css` - Dev sign-in styling (optional, with auth)
 - `rules/rails.md` - Rails conventions for Claude
 - `rules/rscss.md` - CSS conventions for Claude
