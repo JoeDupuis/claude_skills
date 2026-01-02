@@ -141,11 +141,13 @@ Copy `assets/languages/rails/auth/dev_signin_controller.js` to `app/javascript/c
 
 Copy `assets/languages/rails/auth/_dev_signin.html.erb` to `app/views/sessions/_dev_signin.html.erb`.
 
-Add to the sessions/new view (login page), inside the form:
+Add to the sessions/new view (login page), **inside the `form_with` block** (before `<% end %>`):
 
 ```erb
 <%= render "dev_signin" %>
 ```
+
+**Important:** The partial must be inside the form because the JS controller uses `this.element.closest("form")` to find and clone the form for submission.
 
 #### Add Dev Sign-In Styling
 
