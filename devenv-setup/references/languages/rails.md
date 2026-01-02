@@ -192,6 +192,10 @@ Add branch indicator at the bottom of `<body>`, before the closing `</body>` tag
 <% end %>
 ```
 
+#### app/assets/stylesheets/branch-indicator.css
+
+Create this file with content from `assets/languages/rails/stylesheets/branch-indicator.css`.
+
 ### 15. Copy Claude Rules
 
 Copy the rules files from `assets/languages/rails/rules/` to the project's `.claude/rules/` directory:
@@ -227,5 +231,6 @@ All template files are located in `assets/languages/rails/`:
 - `views/_form_errors.html.erb` - Form errors partial
 - `views/layout_flash_messages.html.erb` - Flash messages for layout (top of body)
 - `views/layout_branch_indicator.html.erb` - Git branch indicator for layout (bottom of body, dev only)
+- `stylesheets/branch-indicator.css` - Styling for the branch indicator
 - `rules/rails.md` - Rails conventions for Claude
 - `rules/rscss.md` - CSS conventions for Claude
