@@ -152,7 +152,17 @@ Create this file with content from `assets/languages/rails/notice_i18n.rb`.
 
 Add the i18n entries from `assets/languages/rails/locales_additions.yml` under the `en:` key.
 
-### 13. Copy Claude Rules
+### 13. Add Application Helper Methods
+
+#### app/helpers/application_helper.rb
+
+Add the helper methods from `assets/languages/rails/application_helper_additions.rb` inside the `ApplicationHelper` module:
+
+- `form_errors` - renders form error partial
+- `flash_message` - renders flash messages with proper styling
+- `current_git_branch` - returns current git branch in development
+
+### 14. Copy Claude Rules
 
 Copy the rules files from `assets/languages/rails/rules/` to the project's `.claude/rules/` directory:
 
@@ -164,7 +174,7 @@ Copy:
 - `assets/languages/rails/rules/rails.md` → `.claude/rules/rails.md`
 - `assets/languages/rails/rules/rscss.md` → `.claude/rules/rscss.md`
 
-### 14. Commit Changes
+### 15. Commit Changes
 
 Add all files and commit:
 
@@ -180,6 +190,7 @@ All template files are located in `assets/languages/rails/`:
 - `test_helper_additions.rb` - sop/sos helper methods
 - `session_test_helper.rb` - SessionTestHelper module for authentication in tests
 - `application_system_test_case_additions.rb` - Cuprite configuration for system tests
+- `application_helper_additions.rb` - ApplicationHelper methods (form_errors, flash_message, current_git_branch)
 - `notice_i18n.rb` - NoticeI18n concern for controller flash messages
 - `locales_additions.yml` - I18n entries for the NoticeI18n concern
 - `rules/rails.md` - Rails conventions for Claude
