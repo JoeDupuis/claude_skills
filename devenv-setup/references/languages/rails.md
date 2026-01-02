@@ -75,7 +75,42 @@ The Rails generator may remove devenv entries from `.gitignore` and `.dockerigno
 devenv.local.nix
 ```
 
-### 9. Add Test Helpers
+### 9. Replace Capybara with Cuprite
+
+Edit the `Gemfile` to replace the capybara gem with cuprite and launchy:
+
+```ruby
+gem "cuprite"
+gem "launchy"
+```
+
+Then run bundle install again:
+
+```bash
+devenv shell "bundle install"
+```
+
+### 10. Configure System Tests
+
+Edit `test/application_system_test_case.rb` to replace the default `driven_by` configuration with Cuprite. Add the content from `assets/languages/rails/application_system_test_case_additions.rb`:
+
+```ruby
+Capybara.test_id = "data-qa"
+Capybara.add_selector(:test_id) do
+  xpath do |locator|
+    XPath.descendant[XPath.attr(Capybara.test_id) == locator]
+  end
+end
+
+driven_by :cuprite, using: :chrome, screen_size: [ 1400, 1400 ], options: {
+  headless: true,
+  process_timeout: 20
+}
+```
+
+Replace the existing `driven_by` line with this configuration.
+
+### 11. Add Test Helpers
 
 #### test/test_helper.rb
 
@@ -107,7 +142,7 @@ include SessionTestHelper
 
 Create this file with content from `assets/languages/rails/session_test_helper.rb`.
 
-### 10. Add NoticeI18n Concern
+### 12. Add NoticeI18n Concern
 
 #### app/controllers/concerns/notice_i18n.rb
 
@@ -117,7 +152,7 @@ Create this file with content from `assets/languages/rails/notice_i18n.rb`.
 
 Add the i18n entries from `assets/languages/rails/locales_additions.yml` under the `en:` key.
 
-### 11. Copy Claude Rules
+### 13. Copy Claude Rules
 
 Copy the rules files from `assets/languages/rails/rules/` to the project's `.claude/rules/` directory:
 
@@ -129,7 +164,7 @@ Copy:
 - `assets/languages/rails/rules/rails.md` → `.claude/rules/rails.md`
 - `assets/languages/rails/rules/rscss.md` → `.claude/rules/rscss.md`
 
-### 12. Commit Changes
+### 14. Commit Changes
 
 Add all files and commit:
 
@@ -144,6 +179,7 @@ All template files are located in `assets/languages/rails/`:
 
 - `test_helper_additions.rb` - sop/sos helper methods
 - `session_test_helper.rb` - SessionTestHelper module for authentication in tests
+- `application_system_test_case_additions.rb` - Cuprite configuration for system tests
 - `notice_i18n.rb` - NoticeI18n concern for controller flash messages
 - `locales_additions.yml` - I18n entries for the NoticeI18n concern
 - `rules/rails.md` - Rails conventions for Claude
