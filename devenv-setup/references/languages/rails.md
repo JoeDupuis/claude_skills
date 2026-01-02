@@ -196,7 +196,24 @@ Add branch indicator at the bottom of `<body>`, before the closing `</body>` tag
 
 Create this file with content from `assets/languages/rails/stylesheets/branch-indicator.css`.
 
-### 15. Copy Claude Rules
+### 15. Add Base Stylesheets
+
+Copy the following stylesheets from `assets/languages/rails/stylesheets/` to `app/assets/stylesheets/`:
+
+- `_reset.css` - CSS reset
+- `variables.css` - CSS custom properties (colors, spacing, typography, etc.)
+- `base.css` - Base element styles
+- `flash-alert.css` - Flash message styling
+
+### 16. Add Stimulus Controllers
+
+#### app/javascript/controllers/alert_controller.js
+
+Create this file with content from `assets/languages/rails/javascript/controllers/alert_controller.js`.
+
+This controller adds a close button to flash alerts and handles dismissal.
+
+### 17. Copy Claude Rules
 
 Copy the rules files from `assets/languages/rails/rules/` to the project's `.claude/rules/` directory:
 
@@ -208,7 +225,7 @@ Copy:
 - `assets/languages/rails/rules/rails.md` → `.claude/rules/rails.md`
 - `assets/languages/rails/rules/rscss.md` → `.claude/rules/rscss.md`
 
-### 16. Commit Changes
+### 18. Commit Changes
 
 Add all files and commit:
 
@@ -231,6 +248,11 @@ All template files are located in `assets/languages/rails/`:
 - `views/_form_errors.html.erb` - Form errors partial
 - `views/layout_flash_messages.html.erb` - Flash messages for layout (top of body)
 - `views/layout_branch_indicator.html.erb` - Git branch indicator for layout (bottom of body, dev only)
+- `stylesheets/_reset.css` - CSS reset
+- `stylesheets/variables.css` - CSS custom properties
+- `stylesheets/base.css` - Base element styles
+- `stylesheets/flash-alert.css` - Flash message styling
 - `stylesheets/branch-indicator.css` - Styling for the branch indicator
+- `javascript/controllers/alert_controller.js` - Stimulus controller for dismissable alerts
 - `rules/rails.md` - Rails conventions for Claude
 - `rules/rscss.md` - CSS conventions for Claude
