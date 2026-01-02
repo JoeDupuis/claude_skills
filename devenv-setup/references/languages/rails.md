@@ -131,13 +131,22 @@ devenv shell "bin/rails db:migrate"
 devenv shell "bin/rails db:seed"
 ```
 
-### 10. Replace Capybara with Cuprite
+### 10. Update Gemfile
 
-Edit the `Gemfile` to replace the capybara gem with cuprite and launchy:
+Edit the `Gemfile`:
+
+**In the test group**, replace capybara with cuprite and launchy:
 
 ```ruby
 gem "cuprite"
 gem "launchy"
+```
+
+**In the development group**, add:
+
+```ruby
+gem "hotwire-spark"
+gem "letter_opener_web", "~> 3.0"
 ```
 
 Then run bundle install again:
