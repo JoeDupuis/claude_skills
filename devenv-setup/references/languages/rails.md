@@ -185,11 +185,20 @@ Then run bundle install again:
 devenv shell "bundle install"
 ```
 
+#### Configure Letter Opener Web
+
+Edit `config/environments/development.rb` to set the delivery method:
+
+```ruby
+config.action_mailer.delivery_method = :letter_opener_web
+```
+
 #### Update Routes
 
 Add to `config/routes.rb`:
 
 ```ruby
+mount LetterOpenerWeb::Engine, at: "/letter_opener" if defined?(LetterOpenerWeb::Engine)
 mount MissionControl::Jobs::Engine, at: "/jobs"
 ```
 
