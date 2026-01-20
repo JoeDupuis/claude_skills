@@ -18,9 +18,16 @@ Ruby projects require a `.ruby-version` file to specify the Ruby version.
 
 ### devenv.nix
 
-Two modifications needed:
+Three modifications needed:
 
-1. **Add packages** - Replace the existing `packages = with pkgs; [...]` section to include Ruby-specific packages:
+1. **Add environment variables** - Add to the existing `env` attribute set (use dot notation to merge):
+
+```nix
+  env.RUBOCOP_CACHE_ROOT = "${config.devenv.state}/rubocop_cache";
+  env.GEM_SPEC_CACHE = "${config.devenv.state}/gem_specs";
+```
+
+2. **Add packages** - Replace the existing `packages = with pkgs; [...]` section to include Ruby-specific packages:
 
 ```nix
   packages = with pkgs; [
@@ -37,7 +44,7 @@ Two modifications needed:
   ];
 ```
 
-2. **Add Ruby language configuration** - Add before the closing brace:
+3. **Add Ruby language configuration** - Add before the closing brace:
 
 ```nix
   languages.ruby.enable = true;
