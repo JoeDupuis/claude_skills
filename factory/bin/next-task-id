@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+TASKS_DIR="${1:-.tasks}"
+COUNTER_FILE="$TASKS_DIR/.counter"
+LOCK_DIR="$TASKS_DIR/.counter.lock"
+
+if [ ! -d "$TASKS_DIR" ]; then
+  echo "Error: $TASKS_DIR directory not found" >&2
+  exit 1
+fi
+
+MAX_RETRIES=50
+RETRY_DELAY=0.1
+acquired=false
+
+for _ in $(seq 1 $MAX_RETRIES); do
+  if mkdir "$LOCK_DIR" 2>/dev/null; then
+    acquired=true
+    break
+  fi
+  sleep $RETRY_DELAY
+done
+
+if [ "$acquired" = false ]; then
+  echo "Error: Could not acquire lock after $MAX_RETRIES retries" >&2
+  exit 1
+fi
+
+trap 'rmdir "$LOCK_DIR" 2>/dev/null' EXIT
+
+if [ -f "$COUNTER_FILE" ]; then
+  current=$(cat "$COUNTER_FILE")
+else
+  current=0
+fi
+
+next=$((current + 1))
+echo "$next" > "$COUNTER_FILE"
+echo "$next"
